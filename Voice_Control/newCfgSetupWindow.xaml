@@ -1,0 +1,46 @@
+﻿<Window x:Class="Voice_Control.newCfgSetupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Voice_Control"
+        mc:Ignorable="d"
+        Title="New cfg creation" Height="185" Width="240"
+        ResizeMode="NoResize">
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <LinearGradientBrush.RelativeTransform>
+                    <TransformGroup>
+                        <ScaleTransform CenterY="0.5" CenterX="0.5"/>
+                        <SkewTransform CenterX="0.5" CenterY="0.5"/>
+                        <RotateTransform Angle="-42" CenterX="0.5" CenterY="0.5"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </LinearGradientBrush.RelativeTransform>
+                <GradientStop Color="BlueViolet"/>
+                <GradientStop Color="Blue" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <StackPanel>
+            <TextBlock Text="Creating new config"
+                       HorizontalAlignment="Center"
+                       FontSize="24" Foreground="White"
+                       FontWeight="Medium" Margin="0 5 0 0"/>
+            <StackPanel Margin="0 15 0 0" Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="New cfg name" FontSize="15" 
+                           Foreground="White" Margin="0 0 5 0"/>
+                <TextBox Name="tbox_cfgName" Height="20" Width="100" TextChanged="tbox_cfgName_TextChanged"/>
+            </StackPanel>
+            
+            <StackPanel Margin="0 5 0 0" Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="Cfg culture" FontSize="15" 
+                           Foreground="White" Margin="23 0 5 0"/>
+                <ComboBox Name="cb_cultures" Width="100"/>
+            </StackPanel>
+
+            <Button Name="bt_finish" Content="Create"
+                    Width="100" Margin="0 20 0 0" Click="bt_finish_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -5,24 +5,44 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Voice_Control"
         mc:Ignorable="d"
-        Title="cfgCreationWindow" Height="450" Width="800"
-        ResizeMode="NoResize">
+        Title="cfgCreationWindow" Height="450" Width="800">
     <Grid>
         <DockPanel>
-            <StackPanel DockPanel.Dock="Bottom" 
+            <DockPanel.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="BlueViolet"/>
+                    <GradientStop Color="Blue" Offset="1"/>
+                </LinearGradientBrush>
+            </DockPanel.Background>
+            <StackPanel DockPanel.Dock="Bottom" Background="White"
                         Orientation="Horizontal" Height="30">
-                <Button Content="Save"/>
-                <Button Content="Add new"/>
-                <Button Content="Remove" IsEnabled="False"/>
+                <Button Name="bt_save" Content="Save" IsEnabled="False"/>
+                <Button Name="bt_addNewLine" Content="Add new" IsEnabled="False" Click="bt_addNewLine_Click"/>
+                <Button Name="bt_removeLine" Content="Remove" IsEnabled="False"/>
             </StackPanel>
-            <ComboBox DockPanel.Dock="Bottom" Height="20"
-                      Name="cb_listOfJsons">
-                
-            </ComboBox>
-            
-            <ListView DockPanel.Dock="Top">
-                
-            </ListView>
+            <StackPanel DockPanel.Dock="Bottom" Background="White" 
+                        Orientation="Horizontal" Height="25">
+                <Border BorderThickness="1" BorderBrush="Black">
+                    <TextBlock Name="tb_cfgName" Text="-" 
+                               Width="100" ToolTip="Current cfg file"
+                               VerticalAlignment="Center" Foreground="DarkRed"
+                               TextAlignment="Center" FontWeight="Medium"/>
+                </Border>
+                <Border BorderThickness="1" BorderBrush="Black">
+                    <TextBlock Name="tb_cfgCulture" Text="-" 
+                               Width="60" ToolTip="Current culture"
+                               VerticalAlignment="Center" Foreground="DarkRed"
+                               TextAlignment="Center" FontWeight="Medium"/>
+                </Border>
+
+                <Button Name="bt_load" Content="Load" Click="bt_load_Click"/>
+                <Button Name="bt_new" Content="New" Click="bt_new_Click"/>
+                <Button Name="bt_del" Content="Delete" Click="bt_del_Click"/>
+
+            </StackPanel>
+
+            <DataGrid DockPanel.Dock="Top" Margin="5" Name="dg_commands"
+                      AutoGenerateColumns="True"/>
         </DockPanel>
     </Grid>
 </Window>

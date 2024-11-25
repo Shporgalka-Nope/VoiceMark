@@ -22,15 +22,15 @@ namespace Voice_Control
     /// </summary>
     public partial class SetUpWindow : Window
     {
+        private List<CultureInfo> cultures = new List<CultureInfo>();
         public CultureInfo selectedCulture;
-        private IReadOnlyCollection<RecognizerInfo> languages;
 
         public SetUpWindow(SpeechRecognitionEngine engine)
         {
             InitializeComponent();
 
             //Culture part
-            languages = SpeechRecognitionEngine.InstalledRecognizers();
+            IReadOnlyCollection<RecognizerInfo> languages = SpeechRecognitionEngine.InstalledRecognizers();
             if (languages == null) 
             { 
                 MessageBox.Show("Error getting languages"); 
@@ -39,6 +39,7 @@ namespace Voice_Control
             foreach (var language in languages)
             {
                 CultureInfo info = language.Culture;
+                cultures.Add(info);
                 cb_languageOptions.Items.Add(info);
             }
             cb_languageOptions.SelectedIndex = 0;
@@ -66,9 +67,9 @@ namespace Voice_Control
 
         private void bt_createCfg_Click(object sender, RoutedEventArgs e)
         {
-            cfgCreationWindow cfgWin = new cfgCreationWindow();
+            cfgCreationWindow cfgWin = new cfgCreationWindow(cultures.ToArray());
             cfgWin.ShowDialog();
-            this.Close();
+            
         }
     }
 }

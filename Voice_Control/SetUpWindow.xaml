@@ -43,8 +43,8 @@
                       Margin="0 5 0 0" Width="100" HorizontalAlignment="Center" 
                       SelectionChanged="cb_languageOptions_SelectionChanged"/>
 
-            <Button Name="bt_finish" Content="Finish" FontSize="16" FontWeight="DemiBold" Margin="0 20 0 0" Width="100" VerticalAlignment="Center" HorizontalAlignment="Center" Background="White" Click="bt_finish_Click"/>
-            <Button Name="bt_createCfg" Content="Cfg editor" FontSize="16" FontWeight="DemiBold" Margin="0 5 0 0" Width="100" VerticalAlignment="Center" HorizontalAlignment="Center" Background="White" Click="bt_createCfg_Click"/>
+            <Button Name="bt_finish" Content="Finish" FontSize="16" FontWeight="Regular" Margin="0 20 0 0" Width="100" VerticalAlignment="Center" HorizontalAlignment="Center" Background="White" Click="bt_finish_Click"/>
+            <Button Name="bt_createCfg" Content="Cfg editor" FontSize="16" FontWeight="Regular" Margin="0 5 0 0" Width="100" VerticalAlignment="Center" HorizontalAlignment="Center" Background="White" Click="bt_createCfg_Click"/>
 
             <TextBlock Text="*Hover over an element for tips" FontWeight="Bold" Margin="0 5 0 0" FontSize="14" Foreground="CornflowerBlue"   HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </StackPanel>
