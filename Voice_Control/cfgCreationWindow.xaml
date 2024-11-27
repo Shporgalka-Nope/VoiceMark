@@ -41,8 +41,9 @@
 
             </StackPanel>
 
-            <DataGrid DockPanel.Dock="Top" Margin="5" Name="dg_commands"
-                      AutoGenerateColumns="True"/>
+            <ListView 
+                Name="lv_commands" ScrollViewer.CanContentScroll="True" Margin="5"/>
+
         </DockPanel>
     </Grid>
 </Window>

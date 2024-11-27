@@ -11,11 +11,13 @@ namespace Voice_Control
     {
         public string Phrase;
         public int Action;
+        public string? Argument;
 
-        public Command(string p, int a)
+        public Command(string p, int a, string arg)
         {
             Phrase = p;
             Action = a;
+            Argument = arg;
         }
     }
 }

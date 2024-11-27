@@ -23,6 +23,7 @@ namespace Voice_Control
     {
         private CultureInfo[] _cultures;
         private CommandList currentList;
+        private List<Command> commands;
         private string selectedCfgPath = null;
 
         public cfgCreationWindow(CultureInfo[] cultures)
@@ -42,7 +43,6 @@ namespace Voice_Control
 
             if (createCfg.DialogResult == true) { LoadJson(createCfg.pathToCfg); }
         }
-
         private async void LoadJson(string path)
         {
             CommandList newList = null;
@@ -66,13 +66,13 @@ namespace Voice_Control
 
             tb_cfgName.Text = newList.Name;
             tb_cfgCulture.Text = newList.Culture;
-            dg_commands.ItemsSource = newList.Commands;
+            lv_commands.ItemsSource = newList.Commands;
+            commands = newList.Commands.ToList<Command>();
             selectedCfgPath = path;
             bt_del.IsEnabled = true;
 
             bt_addNewLine.IsEnabled = true;
         }
-
         private void bt_load_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog op = new OpenFileDialog();
@@ -82,7 +82,6 @@ namespace Voice_Control
             if (op.ShowDialog() == true) { LoadJson(op.FileName); }
             else { return; }
         }
-
         private void bt_del_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = MessageBox.Show(
@@ -95,17 +94,18 @@ namespace Voice_Control
             if (result == MessageBoxResult.Yes) 
             {
                 File.Delete(selectedCfgPath);
-                dg_commands.Items.Clear();
+                lv_commands.Items.Clear();
                 tb_cfgName.Text = "-";
                 tb_cfgCulture.Text = "-";
                 selectedCfgPath = null;
                 bt_del.IsEnabled = false;
             }
         }
-
         private void bt_addNewLine_Click(object sender, RoutedEventArgs e)
         {
-            
+            newLineWindow newLineWin = new newLineWindow();
+            newLineWin.ShowDialog();
+            //commands.Add();
         }
     }
 }
