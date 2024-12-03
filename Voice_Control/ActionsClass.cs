@@ -11,7 +11,7 @@ namespace Voice_Control
         public static List<CAction> ActionList = new List<CAction>();
         static CActions()
         {
-            CAction newAction = new CAction(1, "Open an application (process.exe)", true);
+            CAction newAction = new CAction(1, "Open an application (path to .exe)", true);
             ActionList.Add(newAction);
             newAction = new CAction(2, "Open explorer (path)", true);
             ActionList.Add(newAction);

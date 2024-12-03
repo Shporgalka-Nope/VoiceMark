@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Voice_Control
 {
-    internal class CommandList
+    public class CommandList
     {
         public string Name { get; set; }
         public Command[]? Commands { get; set; }

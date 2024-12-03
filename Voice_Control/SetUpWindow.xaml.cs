@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Speech.Recognition;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,41 +24,67 @@ namespace Voice_Control
     /// </summary>
     public partial class SetUpWindow : Window
     {
-        private List<CultureInfo> cultures = new List<CultureInfo>();
-        public CultureInfo selectedCulture;
+        private IReadOnlyCollection<RecognizerInfo> availableLangs;
+        public CommandList selectedConfig = null;
+        public CultureInfo selectedCulture = null;
 
         public SetUpWindow(SpeechRecognitionEngine engine)
         {
             InitializeComponent();
 
             //Culture part
-            IReadOnlyCollection<RecognizerInfo> languages = SpeechRecognitionEngine.InstalledRecognizers();
-            if (languages == null) 
+            availableLangs = SpeechRecognitionEngine.InstalledRecognizers();
+            if (availableLangs == null) 
             { 
                 MessageBox.Show("Error getting languages"); 
                 Application.Current.Shutdown();
             }
-            foreach (var language in languages)
-            {
-                CultureInfo info = language.Culture;
-                cultures.Add(info);
-                cb_languageOptions.Items.Add(info);
-            }
-            cb_languageOptions.SelectedIndex = 0;
 
             //Config part
             string dir = Directory.GetCurrentDirectory() + @"\jsons";
             Directory.CreateDirectory(dir);
-            string[] files = Directory.GetFiles(dir, "*.json");
-            foreach (string file in files)
-            {
-
-            }
         }
 
-        private void cb_languageOptions_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void UpdateAll()
         {
-            selectedCulture = (CultureInfo)cb_languageOptions.SelectedItem;
+            tb_configName.Text = selectedConfig.Name;
+            tb_configName.Foreground = Brushes.Black;
+            tb_configLang.Text = selectedConfig.Culture;
+            tb_configLang.Foreground = Brushes.Black;
+            bt_finish.IsEnabled = true;
+
+            foreach(var lang in availableLangs)
+            {
+                if (lang.Culture.Name == selectedConfig.Culture) { selectedCulture = lang.Culture; }
+            }
+
+            if (selectedCulture == null)
+            {
+                MessageBoxResult result = MessageBox.Show(
+                    $"Language of selected config is missing from installed voice recognision packs. " +
+                    $"\nCheck your installed languages packs and try again. " +
+                    $"\nMissing voice recognision pack for: {selectedConfig.Culture}",
+                    "Missing voice pack",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                    );
+                tb_configLang.Foreground = Brushes.Red;
+                bt_finish.IsEnabled = false;
+                return; 
+            }
+            if (selectedConfig.Commands == null || selectedConfig.Commands.Length == 0)
+            {
+                MessageBoxResult result = MessageBox.Show(
+                    $"Selected config has no commands in it." +
+                    $"\nAdd commands in CFG Editor and try again.",
+                    "Missing commands",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                    );
+                tb_configName.Foreground = Brushes.Red;
+                bt_finish.IsEnabled = false;
+                return;
+            }
         }
 
         private void bt_finish_Click(object sender, RoutedEventArgs e)
@@ -64,12 +92,44 @@ namespace Voice_Control
             DialogResult = true;
             this.Close();
         }
-
         private void bt_createCfg_Click(object sender, RoutedEventArgs e)
         {
+            List<CultureInfo> cultures = new List<CultureInfo>();
+            foreach (var lang in availableLangs) { cultures.Add(lang.Culture); }
             cfgCreationWindow cfgWin = new cfgCreationWindow(cultures.ToArray());
             cfgWin.ShowDialog();
-            
+            if (DialogResult == true)
+            {
+                UpdateAll();
+            }
+        }
+        private async void bt_load_Click(object sender, RoutedEventArgs e)
+        {
+            string? cfgDir = null;
+            OpenFileDialog op = new OpenFileDialog();
+            op.Title = "Pick json file";
+            op.Filter = "Json Files (*.json)|*.json";
+            op.InitialDirectory = Directory.GetCurrentDirectory() + @"\jsons";
+            if (op.ShowDialog() == true) { cfgDir = op.FileName; }
+            else { return; }
+
+            try
+            {
+                using (FileStream fs = new FileStream(cfgDir, FileMode.Open))
+                {
+                    selectedConfig = await JsonSerializer.DeserializeAsync<CommandList>(fs);
+                }
+                if (selectedConfig == null)
+                {
+                    throw new NullReferenceException("NewList was null!");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An unexpected error occured!\n{ex.Message}\n{ex.TargetSite}");
+                return;
+            }
+            UpdateAll();
         }
     }
 }
