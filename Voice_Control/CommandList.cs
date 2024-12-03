@@ -13,20 +13,23 @@ namespace Voice_Control
         public string Name { get; set; }
         public Command[]? Commands { get; set; }
         public string Culture { get; set; }
+        public bool isNative { get; set; }
 
-        public CommandList(string n, Command[]? cs, CultureInfo ci) 
+        public CommandList(string n, Command[]? cs, CultureInfo ci, bool isN) 
         {
             Name = n;
             Commands = cs;
             Culture = ci.Name;
+            isNative = isN;
         }
 
         [JsonConstructor]
-        public CommandList(string name, Command[]? commands, string culture)
+        public CommandList(string Name, Command[]? Commands, string Culture, bool isNative)
         {
-            Name = name;
-            Commands = commands;
-            Culture = culture;
+            this.Name = Name;
+            this.Commands = Commands;
+            this.Culture = Culture;
+            this.isNative = isNative;
         }
     }
 }

@@ -3,21 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Voice_Control
 {
     internal class Command
     {
-        public string Phrase;
-        public int Action;
-        public string? Argument;
+        public string Phrase { get; set; }
+        public int Action {  get; set; }
+        public string? Argument {  get; set; }
 
-        public Command(string p, int a, string arg)
+        [JsonConstructor]
+        public Command(string Phrase, int Action, string? Argument)
         {
-            Phrase = p;
-            Action = a;
-            Argument = arg;
+            this.Phrase = Phrase;
+            this.Action = Action;
+            this.Argument = Argument;
         }
     }
 }

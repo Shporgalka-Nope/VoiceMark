@@ -39,15 +39,13 @@ namespace Voice_Control
 
         private async void bt_finish_Click(object sender, RoutedEventArgs e)
         {
-            //cfgName = tbox_cfgName.Text;
-            //selectedCulture = (CultureInfo)cb_cultures.SelectedItem;
             try
             {
                 string dir = Directory.GetCurrentDirectory() + @"\jsons";
 
                 using (FileStream fs = new FileStream(dir + $@"\{tbox_cfgName.Text}.json", FileMode.OpenOrCreate))
                 {
-                    CommandList newList = new CommandList(tbox_cfgName.Text, null, (CultureInfo)cb_cultures.SelectedItem);
+                    CommandList newList = new CommandList(tbox_cfgName.Text, null, (CultureInfo)cb_cultures.SelectedItem, false);
                     await JsonSerializer.SerializeAsync<CommandList>(fs, newList);
                     pathToCfg = dir + $@"\{tbox_cfgName.Text}.json";
                 }

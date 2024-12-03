@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using Accessibility;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -21,9 +22,8 @@ namespace Voice_Control
 {
     public partial class cfgCreationWindow : Window
     {
-        private CultureInfo[] _cultures;
-        private CommandList currentList;
-        private List<Command> commands;
+        private CultureInfo[] _cultures; //Needed for new cfg creation (not used here)
+        private CommandList currentList; //Stores all CAction after JSON load
         private string selectedCfgPath = null;
 
         public cfgCreationWindow(CultureInfo[] cultures)
@@ -63,14 +63,13 @@ namespace Voice_Control
                 return;
             }
             currentList = newList;
+            UpdateScroll();
 
             tb_cfgName.Text = newList.Name;
             tb_cfgCulture.Text = newList.Culture;
-            lv_commands.ItemsSource = newList.Commands;
-            commands = newList.Commands.ToList<Command>();
             selectedCfgPath = path;
+            
             bt_del.IsEnabled = true;
-
             bt_addNewLine.IsEnabled = true;
         }
         private void bt_load_Click(object sender, RoutedEventArgs e)
@@ -94,18 +93,116 @@ namespace Voice_Control
             if (result == MessageBoxResult.Yes) 
             {
                 File.Delete(selectedCfgPath);
-                lv_commands.Items.Clear();
                 tb_cfgName.Text = "-";
                 tb_cfgCulture.Text = "-";
                 selectedCfgPath = null;
+                currentList = null;
                 bt_del.IsEnabled = false;
+                UpdateScroll();
             }
         }
         private void bt_addNewLine_Click(object sender, RoutedEventArgs e)
         {
             newLineWindow newLineWin = new newLineWindow();
             newLineWin.ShowDialog();
-            //commands.Add();
+
+            List<Command> newCommands;
+            if (DialogResult != true) 
+            {
+                if (currentList.Commands != null) { newCommands = currentList.Commands.ToList(); }
+                else { newCommands = new List<Command>(); }
+                Command cmd = new Command(newLineWin.ActionsPhrase, newLineWin.ActionType, newLineWin.ActionArgument);
+                newCommands.Add(cmd);
+                currentList.Commands = newCommands.ToArray();
+                UpdateScroll(); 
+            }
+        }
+
+        private void UpdateScroll()
+        {
+            sp_allCommands.Children.Clear();
+            if (currentList.Commands == null) 
+            {
+                bt_save.IsEnabled = false;
+                bt_addNewLine.IsEnabled = false;
+                bt_delLine.IsEnabled = false;
+                tbox_lineNum.IsEnabled = false;
+                return; 
+            }
+            int lineNum = 0;
+            foreach(Command act in currentList.Commands)
+            {
+                Border border = new Border();
+                StackPanel newPanel = new StackPanel();
+                newPanel.Orientation = Orientation.Horizontal;
+                border.Child = newPanel;
+                border.BorderThickness = new Thickness(2);
+
+                TextBlock phrase = new TextBlock();
+                phrase.Text = $"{lineNum+1} Phrase: {act.Phrase}; ";
+                phrase.FontSize = 14;
+                phrase.Foreground = Brushes.White;
+
+                TextBlock action = new TextBlock();
+                int i = 0;
+                while (act.Action != CActions.ActionList[i].ActionNum)
+                {
+                    i++;
+                }
+                action.Text = $"Action: {CActions.ActionList[i].Discription}; ";
+                action.FontSize = 14;
+                action.Foreground = Brushes.White;
+
+                TextBlock argument = new TextBlock();
+                argument.Text = $"Argument: {act.Argument}; ";
+                argument.FontSize = 14;
+                argument.Foreground = Brushes.White;
+
+                newPanel.Children.Add(phrase);
+                newPanel.Children.Add(action);
+                newPanel.Children.Add(argument);
+                sp_allCommands.Children.Add(border);
+            }
+            bt_save.IsEnabled = true;
+            bt_addNewLine.IsEnabled = true;
+            bt_delLine.IsEnabled = true;
+            tbox_lineNum.IsEnabled = true;
+            lineNum++;
+        }
+
+        private async void bt_save_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string dir = selectedCfgPath;
+                File.Delete(dir);
+
+                using (FileStream fs = new FileStream(dir, FileMode.OpenOrCreate))
+                {
+                    CommandList newList = currentList;
+                    await JsonSerializer.SerializeAsync<CommandList>(fs, newList);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An unexpected error occured!\n{ex.Message}\n{ex.TargetSite}");
+                return;
+            }
+            DialogResult = true;
+            this.Close();
+        }
+
+        private void bt_delLine_Click(object sender, RoutedEventArgs e)
+        {
+            if(int.TryParse(tbox_lineNum.Text, out int num))
+            {
+                if(num < 1 || num > currentList.Commands.Length) { return; }
+                List<Command> newList = currentList.Commands.ToList<Command>();
+                newList.RemoveAt(num - 1);
+                currentList.Commands = newList.ToArray();
+                UpdateScroll();
+            }
+            else { return; }
         }
     }
 }

@@ -16,9 +16,10 @@
             </DockPanel.Background>
             <StackPanel DockPanel.Dock="Bottom" Background="White"
                         Orientation="Horizontal" Height="30">
-                <Button Name="bt_save" Content="Save" IsEnabled="False"/>
-                <Button Name="bt_addNewLine" Content="Add new" IsEnabled="False" Click="bt_addNewLine_Click"/>
-                <Button Name="bt_removeLine" Content="Remove" IsEnabled="False"/>
+                <Button Name="bt_save" Content="Save and exit" IsEnabled="False" Width="100" Click="bt_save_Click"/>
+                <Button Name="bt_addNewLine" Content="Add new" IsEnabled="False" Width="100" Click="bt_addNewLine_Click"/>
+                <Button Name="bt_delLine" Content="Delete line" IsEnabled="False" Width="100" Margin="10 0 0 0" Click="bt_delLine_Click"/>
+                <TextBox Name="tbox_lineNum" Width="35" IsEnabled="False"/>
             </StackPanel>
             <StackPanel DockPanel.Dock="Bottom" Background="White" 
                         Orientation="Horizontal" Height="25">
@@ -38,12 +39,12 @@
                 <Button Name="bt_load" Content="Load" Click="bt_load_Click"/>
                 <Button Name="bt_new" Content="New" Click="bt_new_Click"/>
                 <Button Name="bt_del" Content="Delete" Click="bt_del_Click"/>
-
             </StackPanel>
 
-            <ListView 
-                Name="lv_commands" ScrollViewer.CanContentScroll="True" Margin="5"/>
+            <ScrollViewer>
+                <StackPanel Name="sp_allCommands" Margin="5 5 5 0"/>
 
+            </ScrollViewer>
         </DockPanel>
     </Grid>
 </Window>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -19,37 +20,48 @@ namespace Voice_Control
     /// </summary>
     public partial class newLineWindow : Window
     {
+        public string ActionsPhrase { get; set; }
+        public int ActionType { get; set; }
+        public string ActionArgument { get; set; }
+
+        private CAction[] actionsArray;
+
         public newLineWindow()
         {
             InitializeComponent();
 
-            foreach (CAction act in CActions.ActionList)
+            foreach(CAction act in CActions.ActionList)
             {
-                cb_action.Items.Add(act);
+                cb_action.Items.Add(act.Discription);
             }
+
+            actionsArray = CActions.ActionList.ToArray();
         }
 
-        private void tbox_phrase_TextChanged(object sender, TextChangedEventArgs e)
+        private void bt_done_Click(object sender, RoutedEventArgs e)
         {
-            if (tbox_phrase.Text.Trim() != "") { cb_action.IsEnabled = true; }
-        }
+            if (tbox_phrase.Text.Trim() == "")
+            {
+                MessageBox.Show("Key phrase required");
+                return;
+            }
+            if (cb_action.SelectedItem == null)
+            {
+                MessageBox.Show("Action required");
+                return; 
+            }
+            if (actionsArray[cb_action.SelectedIndex].argRequired && tbox_arg.Text.Trim() == "")
+            {
+                MessageBox.Show("Argument required");
+                return;
+            }
 
-        private void cb_action_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            CAction act = cb_action.SelectedItem as CAction;
-            if (act.argRequired) { tbox_arg.IsEnabled = true; }
-        }
+            ActionsPhrase = tbox_phrase.Text;
+            ActionType = actionsArray[cb_action.SelectedIndex].ActionNum;
+            ActionArgument = tbox_arg.Text;
 
-        private void ConditionsCheck()
-        {
-            bool flag = true;
-            if (tbox_arg.Text.Trim() == "") { flag = false; }
-            else { cb_action.IsEnabled = true; }
-            if (cb_action.SelectedItem == null) { flag = false; }
-            CAction act = cb_action.SelectedItem as CAction;
-            if (act.argRequired && tbox_arg.Text.Trim() == "") { flag = false; }
-
-            if (flag) { bt_done.IsEnabled = true; }
+            DialogResult = true;
+            this.Close();
         }
     }
 }

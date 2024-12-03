@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Voice_Control"
         mc:Ignorable="d"
-        Title="VoiceMark" Height="140" Width="600">
+        Title="VoiceMark" Height="150" Width="600">
     <Window.Background>
         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="BlueViolet"/>
@@ -17,24 +17,24 @@
             <StackPanel Margin="0 5 0 0" Orientation="Horizontal">
                 <TextBlock Text="Key phrase" Width="80"
                            TextAlignment="Center" Foreground="White"/>
-                <TextBox Name="tbox_phrase" Width="500" TextChanged="tbox_phrase_TextChanged"/>
+                <TextBox Name="tbox_phrase" Width="500"/>
             </StackPanel>
 
             <StackPanel Margin="0 5 0 0" Orientation="Horizontal">
                 <TextBlock Text="Action" Width="80" Foreground="White"
                            TextAlignment="Center"/>
-                <ComboBox Name="cb_action" Width="500" IsEnabled="False" SelectionChanged="cb_action_SelectionChanged"/>
+                <ComboBox Name="cb_action" Width="500"/>
             </StackPanel>
 
             <StackPanel Margin="0 5 0 0" Orientation="Horizontal">
                 <TextBlock Text="Argument" Width="80" Foreground="White"
                            TextAlignment="Center"/>
-                <TextBox Name="tbox_arg" Width="500" IsEnabled="False"/>
+                <TextBox Name="tbox_arg" Width="500" />
             </StackPanel>
 
-            <Button Content="Done" Name="bt_done" IsEnabled="False"
+            <Button Content="Done" Name="bt_done"
                     Width="100" HorizontalAlignment="Left"
-                    Margin="10 10 0 0"/>
+                    Margin="10 10 0 0" Click="bt_done_Click"/>
         </StackPanel>
     </Grid>
 </Window>
