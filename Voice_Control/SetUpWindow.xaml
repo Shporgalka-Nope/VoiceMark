@@ -1,4 +1,6 @@
-﻿<Window x:Class="Voice_Control.SetUpWindow"
+﻿<Window 
+        Name="setUpWin"
+        x:Class="Voice_Control.SetUpWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -31,29 +33,39 @@
         <StackPanel>
             <TextBlock Text="Settings" Margin="0 10 0 10" FontSize="28" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
 
-                <TextBlock Text="Config" FontSize="16" Foreground="White" HorizontalAlignment="Center"/>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Border BorderBrush="Black" BorderThickness="2" HorizontalAlignment="Center" Margin="0 5 0 0">
-                    <TextBlock Name="tb_configName" Text="" FontSize="14" Width="100" Height="20"
-                    Foreground="Black" Background="White"
-                    HorizontalAlignment="Center"/>
-                </Border>
+            <TextBlock Text="Config" FontSize="16" Foreground="White" HorizontalAlignment="Center"/>
+            <Button Content="Load" Margin="0 5 0 0" Width="100" 
+                    Command="{Binding LoadClick}"/>
+            
+            <Border BorderBrush="Black" BorderThickness="2" 
+                    HorizontalAlignment="Center">
+                <TextBlock Text="{Binding tb_configName}" FontSize="14" 
+                           Width="100" Height="20"
+                           Foreground="{Binding tb_configNameForeGr}" Background="White"
+                           HorizontalAlignment="Center"/>
+            </Border>
 
-                <Button Name="bt_load" Content="Load" Margin="5" Click="bt_load_Click"/>
-            </StackPanel>
+            
 
             <TextBlock Text="Language" FontSize="16" 
                        Foreground="White" HorizontalAlignment="Center" 
                        Margin="0 5 0 0"/>
             <Border BorderBrush="Black" BorderThickness="2" HorizontalAlignment="Center" Margin="0 5 0 0">
-                
-                <TextBlock Name="tb_configLang" Text="" FontSize="14" Width="100" Height="20"
-                           Foreground="Black" Background="White"
+
+                <TextBlock Text="{Binding tb_configLang}" FontSize="14" Width="100" Height="20"
+                           Foreground="{Binding tb_configLangForeGr}" Background="White"
                            HorizontalAlignment="Center"/>
             </Border>
             
-            <Button Name="bt_finish" Content="Finish" FontSize="16" FontWeight="Regular" Margin="0 20 0 0" Width="100" VerticalAlignment="Center" HorizontalAlignment="Center" Background="White" Click="bt_finish_Click"/>
-            <Button Name="bt_createCfg" Content="Cfg editor" FontSize="16" FontWeight="Regular" Margin="0 5 0 0" Width="100" VerticalAlignment="Center" HorizontalAlignment="Center" Background="White" Click="bt_createCfg_Click"/>
+            <Button Command="{Binding FinishClick}" CommandParameter="{Binding ElementName=setUpWin}" 
+                    Content="Finish" FontSize="16" FontWeight="Regular" 
+                    Margin="0 20 0 0" Width="100" VerticalAlignment="Center" 
+                    HorizontalAlignment="Center" Background="White" 
+                    IsEnabled="{Binding bt_finishIsEnabled}"/>
+            <Button Command="{Binding CreateClick}" Content="Cfg editor" 
+                    FontSize="16" FontWeight="Regular" Margin="0 5 0 0" 
+                    Width="100" VerticalAlignment="Center" 
+                    HorizontalAlignment="Center" Background="White"/>
 
             <TextBlock Text="*Hover over an element for tips" FontWeight="Bold" Margin="0 5 0 0" FontSize="14" Foreground="CornflowerBlue"   HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </StackPanel>

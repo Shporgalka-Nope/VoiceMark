@@ -1,4 +1,6 @@
-﻿<Window x:Class="Voice_Control.cfgCreationWindow"
+﻿<Window 
+        Name="cfgCreationWin"
+        x:Class="Voice_Control.cfgCreationWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -16,29 +18,40 @@
             </DockPanel.Background>
             <StackPanel DockPanel.Dock="Bottom" Background="White"
                         Orientation="Horizontal" Height="30">
-                <Button Name="bt_save" Content="Save and exit" IsEnabled="False" Width="100" Click="bt_save_Click"/>
-                <Button Name="bt_addNewLine" Content="Add new" IsEnabled="False" Width="100" Click="bt_addNewLine_Click"/>
-                <Button Name="bt_delLine" Content="Delete line" IsEnabled="False" Width="100" Margin="10 0 0 0" Click="bt_delLine_Click"/>
-                <TextBox Name="tbox_lineNum" Width="35" IsEnabled="False"/>
+                <Button 
+                    Width="100"
+                    Command="{Binding SaveClick}" 
+                    CommandParameter="{Binding ElementName=cfgCreationWin}"
+                    IsEnabled="{Binding bt_saveIsEnabled}" />
+                <Button Content="Add new" 
+                        Width="100"
+                        IsEnabled="{Binding bt_addNewLineIsEnabled}" 
+                        Command="{Binding NewLineClick}"/>
+                <Button 
+                        Command="{Binding DelLineClick}" CommandParameter="{Binding ElementName=tbox_lineNum}"
+                        IsEnabled="{Binding bt_delLineIsEnabled}" 
+                        Width="100" Margin="10 0 0 0" Content="Delete line"/>
+                <TextBox Name="tbox_lineNum" Width="35" IsEnabled="{Binding tbox_lineNumIsEnabled}"/>
             </StackPanel>
             <StackPanel DockPanel.Dock="Bottom" Background="White" 
                         Orientation="Horizontal" Height="25">
                 <Border BorderThickness="1" BorderBrush="Black">
-                    <TextBlock Name="tb_cfgName" Text="-" 
+                    <TextBlock Text="{Binding tb_cfgName}" 
                                Width="100" ToolTip="Current cfg file"
                                VerticalAlignment="Center" Foreground="DarkRed"
                                TextAlignment="Center" FontWeight="Medium"/>
                 </Border>
                 <Border BorderThickness="1" BorderBrush="Black">
-                    <TextBlock Name="tb_cfgCulture" Text="-" 
+                    <TextBlock Text="{Binding tb_cfgCulture}" 
                                Width="60" ToolTip="Current culture"
                                VerticalAlignment="Center" Foreground="DarkRed"
                                TextAlignment="Center" FontWeight="Medium"/>
                 </Border>
 
-                <Button Name="bt_load" Content="Load" Click="bt_load_Click"/>
-                <Button Name="bt_new" Content="New" Click="bt_new_Click"/>
-                <Button Name="bt_del" Content="Delete" Click="bt_del_Click"/>
+                <Button Content="Load" Command="{Binding LoadClick}"/>
+                <Button Content="New" Command="{Binding NewClick}"/>
+                <Button IsEnabled="{Binding bt_delIsEnabled}" 
+                        Content="Delete" Command="{Binding DelClick}"/>
             </StackPanel>
 
             <ScrollViewer>

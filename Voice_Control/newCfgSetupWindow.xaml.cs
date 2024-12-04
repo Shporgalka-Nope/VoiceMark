@@ -15,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Voice_Control.VM;
 
 namespace Voice_Control
 {
@@ -23,46 +24,10 @@ namespace Voice_Control
     /// </summary>
     public partial class newCfgSetupWindow : Window
     {
-        public string pathToCfg;
-
         public newCfgSetupWindow(CultureInfo[] cultures)
         {
             InitializeComponent();
-
-            foreach (CultureInfo cult in cultures)
-            {
-                cb_cultures.Items.Add(cult);
-            }
-            cb_cultures.SelectedIndex = 0;
-            bt_finish.IsEnabled = false;
-        }
-
-        private async void bt_finish_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                string dir = Directory.GetCurrentDirectory() + @"\jsons";
-
-                using (FileStream fs = new FileStream(dir + $@"\{tbox_cfgName.Text}.json", FileMode.OpenOrCreate))
-                {
-                    CommandList newList = new CommandList(tbox_cfgName.Text, null, (CultureInfo)cb_cultures.SelectedItem, false);
-                    await JsonSerializer.SerializeAsync<CommandList>(fs, newList);
-                    pathToCfg = dir + $@"\{tbox_cfgName.Text}.json";
-                }
-            }
-            catch (Exception ex) 
-            {
-                MessageBox.Show($"An unexpected error occured!\n{ex.Message}\n{ex.TargetSite}");
-                return;
-            }
-            DialogResult = true;
-            this.Close();
-        }
-
-        private void tbox_cfgName_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (tbox_cfgName.Text.Trim() == "") { bt_finish.IsEnabled = false; }
-            else { bt_finish.IsEnabled = true; }
+            DataContext = new newCfgVM(cultures);
         }
     }
 }

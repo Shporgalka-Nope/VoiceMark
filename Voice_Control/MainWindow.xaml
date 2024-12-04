@@ -1,22 +1,25 @@
-﻿<Window x:Class="Voice_Control.MainWindow"
+﻿<Window 
+        Name="Win_Main"
+        x:Class="Voice_Control.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Voice_Control"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <DockPanel>
             <StackPanel Width="150" DockPanel.Dock="Left" Margin="10 0 0 0">
                 <TextBlock Text="INFORMATION" FontSize="20" HorizontalAlignment="Center" />
-                <TextBlock Name="tb_cultureName" FontSize="16"
+                <TextBlock FontSize="16" Text="{Binding tb_cultureName}"
                            TextWrapping="Wrap"
                            HorizontalAlignment="Left"/>
-                <TextBlock Name="tb_configName" FontSize="16" 
-                           Text="Config: Basic.cfg"
+                <TextBlock FontSize="16" 
+                           Text="{Binding tb_configName}"
                            HorizontalAlignment="Left"/>
-                <TextBlock />
+                <TextBlock/>
             </StackPanel>
 
             <Grid>
@@ -35,12 +38,12 @@
                     </LinearGradientBrush>
                 </Grid.Background>
                 <StackPanel Margin="20 0 0 0">
-                    <TextBlock Text="Speech result: " Foreground="White" 
-                               FontSize="24" Name="tb_CheechToText"
-                               VerticalAlignment="Bottom"/>
-                    <Button Content="Settings" FontSize="18"
-                            Width="100" FontWeight="SemiBold"
-                            Name="bt_settings" Click="bt_settings_Click"/>
+                    <TextBlock Text="{Binding tb_CheechToText}" Foreground="White" 
+                               FontSize="24"/>
+                    <Button Content="Settings" FontSize="18" Width="100" 
+                            FontWeight="SemiBold" Name="bt_settings" 
+                            Command="{Binding SettingsClick}" 
+                            CommandParameter="{Binding Win_Main}"/>
                 </StackPanel>
             </Grid>
             
