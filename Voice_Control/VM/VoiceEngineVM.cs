@@ -111,8 +111,8 @@ namespace Voice_Control.VM
             {
                 return settingsClick ?? (settingsClick = new RelayCommand(obj =>
                 {
-                    SetUpWindow setupWin = new SetUpWindow(engine);
-                    setupWin.ShowDialog();
+                    MainWindow mainWin = new MainWindow();
+                    mainWin.ShowDialog();
                     (obj as MainWindow).Close();
                 }));
             }
