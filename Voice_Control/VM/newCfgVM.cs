@@ -15,11 +15,11 @@ namespace Voice_Control.VM
     {
         public string pathToCfg;
 
-        public List<CultureInfo> cb_cultures = new List<CultureInfo>();
-        public int cb_culturesSelectedIndex;
-        public object cb_culturesSelectedItem;
-        public bool bt_finishIsEnabled;
-        public string tbox_cfgName;
+        public List<CultureInfo> cb_cultures { get; set; } = new List<CultureInfo>();
+        public int cb_culturesSelectedIndex { get; set; }
+        public object cb_culturesSelectedItem { get; set; }
+        public bool bt_finishIsEnabled { get; set; }
+        public string tbox_cfgName { get; set; }
         public newCfgVM(CultureInfo[] cultures)
         {
             foreach (CultureInfo cult in cultures)

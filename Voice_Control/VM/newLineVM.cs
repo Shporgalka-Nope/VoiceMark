@@ -16,11 +16,11 @@ namespace Voice_Control.VM
 
         private CAction[] actionsArray;
 
-        public ItemCollection cb_action;
-        public string tbox_phrase;
-        public object cb_actionSelectedItem;
-        public int cb_actionSelectedIndex;
-        public string tbox_arg;
+        public ItemCollection cb_action { get; set; }
+        public string tbox_phrase { get; set; }
+        public object cb_actionSelectedItem { get; set; }
+        public int cb_actionSelectedIndex { get; set; }
+        public string tbox_arg { get; set; }
 
         public newLineVM()
         {

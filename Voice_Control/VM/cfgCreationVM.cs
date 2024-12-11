@@ -20,14 +20,14 @@ namespace Voice_Control.VM
         private CommandList currentList; //Stores all CAction after JSON load
         private string selectedCfgPath = null;
 
-        public string tb_cfgName;
-        public string tb_cfgCulture;
-        public bool bt_saveIsEnabled;
-        public bool bt_delIsEnabled;
-        public bool bt_delLineIsEnabled;
-        public bool bt_addNewLineIsEnabled;
-        public bool tbox_lineNumIsEnabled;
-        public UIElementCollection sp_allCommands;
+        public string tb_cfgName { get; set; }
+        public string tb_cfgCulture { get; set; }
+        public bool bt_saveIsEnabled { get; set; }
+        public bool bt_delIsEnabled { get; set; }
+        public bool bt_delLineIsEnabled { get; set; }
+        public bool bt_addNewLineIsEnabled { get; set; }
+        public bool tbox_lineNumIsEnabled { get; set; }
+        public UIElementCollection sp_allCommands { get; set; }
 
         public cfgCreationVM(CultureInfo[] cultures)
         {
