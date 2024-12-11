@@ -20,7 +20,16 @@ namespace Voice_Control.VM
     internal class cfgCreationVM : INotifyPropertyChanged
     {
         private CultureInfo[] _cultures { get; set; } //Needed for new cfg creation (not used here)
-        private CommandList currentList { get; set; } //Stores all CAction after JSON load
+        private CommandList _currentList;
+        public CommandList currentList 
+        { 
+            get {  return _currentList; } 
+            set
+            {
+                _currentList = value;
+                OnPropertyChanged("currentList");
+            }
+        } //Stores all CAction after JSON load
         private string selectedCfgPath { get; set; } = null;
 
         private string _tb_cfgName;
@@ -287,7 +296,7 @@ namespace Voice_Control.VM
             if (currentList.Commands != null)
             {
                 foreach (Command act in currentList.Commands)
-            {
+                {
                 Border border = new Border();
                 StackPanel newPanel = new StackPanel();
                 newPanel.Orientation = Orientation.Horizontal;
@@ -318,7 +327,7 @@ namespace Voice_Control.VM
                 newPanel.Children.Add(action);
                 newPanel.Children.Add(argument);
                 sp_allCommands.Add(border);
-            }
+                }
             }
             bt_saveIsEnabled = true;
             bt_addNewLineIsEnabled = true;

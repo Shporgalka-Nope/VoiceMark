@@ -16,7 +16,7 @@ namespace Voice_Control.VM
 
         private CAction[] actionsArray;
 
-        public ItemCollection cb_action { get; set; }
+        public List<string> cb_action { get; set; } = new List<string>();
         public string tbox_phrase { get; set; }
         public object cb_actionSelectedItem { get; set; }
         public int cb_actionSelectedIndex { get; set; }

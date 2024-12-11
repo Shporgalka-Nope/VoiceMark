@@ -55,7 +55,7 @@
             </StackPanel>
 
             <ScrollViewer>
-                <StackPanel Name="sp_allCommands" Margin="5 5 5 0"/>
+                <StackPanel DataContext="{Binding sp_allCommands}" Margin="5 5 5 0"/>
 
             </ScrollViewer>
         </DockPanel>
