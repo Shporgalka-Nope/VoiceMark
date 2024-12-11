@@ -19,6 +19,7 @@ namespace Voice_Control.VM
         public int cb_culturesSelectedIndex;
         public object cb_culturesSelectedItem;
         public bool bt_finishIsEnabled;
+        public string tbox_cfgName;
         public newCfgVM(CultureInfo[] cultures)
         {
             foreach (CultureInfo cult in cultures)
@@ -40,11 +41,11 @@ namespace Voice_Control.VM
                     {
                         string dir = Directory.GetCurrentDirectory() + @"\jsons";
 
-                        using (FileStream fs = new FileStream(dir + $@"\{(obj as TextBox).Text}.json", FileMode.OpenOrCreate))
+                        using (FileStream fs = new FileStream(dir + $@"\{tbox_cfgName}.json", FileMode.OpenOrCreate))
                         {
-                            CommandList newList = new CommandList((obj as TextBox).Text, null, (CultureInfo)cb_culturesSelectedItem, false);
+                            CommandList newList = new CommandList(tbox_cfgName, null, (CultureInfo)cb_culturesSelectedItem, false);
                             JsonSerializer.Serialize<CommandList>(fs, newList);
-                            pathToCfg = dir + $@"\{(obj as TextBox).Text}.json";
+                            pathToCfg = dir + $@"\{tbox_cfgName}.json";
                         }
                     }
                     catch (Exception ex)
@@ -52,15 +53,24 @@ namespace Voice_Control.VM
                         MessageBox.Show($"An unexpected error occured!\n{ex.Message}\n{ex.TargetSite}");
                         return;
                     }
-                    DialogResult = true;
-                    this.Close();
+                    newCfgCookies.pathToCfg = pathToCfg;
+                    (obj as newCfgSetupWindow).DialogResult = true;
+                    (obj as newCfgSetupWindow).Close();
                 }));
             }
         }
-        private void tbox_cfgName_TextChanged(object sender, TextChangedEventArgs e)
+
+        private RelayCommand cfgName_TextChanged;
+        public RelayCommand CfgName_TextChanged
         {
-            if (tbox_cfgName.Text.Trim() == "") { bt_finish.IsEnabled = false; }
-            else { bt_finish.IsEnabled = true; }
+            get
+            {
+                return finishClick ?? (finishClick = new RelayCommand(obj =>
+                { 
+                    if (tbox_cfgName.Trim() == "") { bt_finishIsEnabled = false; }
+                    else { bt_finishIsEnabled = true; }
+                }));
+            }
         }
     }
 }

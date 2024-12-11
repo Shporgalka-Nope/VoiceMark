@@ -44,7 +44,7 @@ namespace Voice_Control.VM
                     newCfgSetupWindow createCfg = new newCfgSetupWindow(_cultures);
                     createCfg.ShowDialog();
 
-                    if (createCfg.DialogResult == true) { LoadJson(createCfg.pathToCfg); }
+                    if (createCfg.DialogResult == true) { LoadJson(newCfgCookies.pathToCfg); }
                 }));
             }
         }
@@ -108,7 +108,7 @@ namespace Voice_Control.VM
                     {
                         if (currentList.Commands != null) { newCommands = currentList.Commands.ToList(); }
                         else { newCommands = new List<Command>(); }
-                        Command cmd = new Command(newLineWin.ActionsPhrase, newLineWin.ActionType, newLineWin.ActionArgument);
+                        Command cmd = new Command(newLineCookies.ActionPhrase, newLineCookies.ActionType, newLineCookies.ActionArgument);
                         newCommands.Add(cmd);
                         currentList.Commands = newCommands.ToArray();
                         UpdateScroll();

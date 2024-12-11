@@ -1,4 +1,6 @@
-﻿<Window x:Class="Voice_Control.newLineWindow"
+﻿<Window 
+        Name="newLineWin"
+        x:Class="Voice_Control.newLineWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -17,24 +19,25 @@
             <StackPanel Margin="0 5 0 0" Orientation="Horizontal">
                 <TextBlock Text="Key phrase" Width="80"
                            TextAlignment="Center" Foreground="White"/>
-                <TextBox Name="tbox_phrase" Width="500"/>
+                <TextBox Text="{Binding tbox_phrase}" Width="500"/>
             </StackPanel>
 
             <StackPanel Margin="0 5 0 0" Orientation="Horizontal">
                 <TextBlock Text="Action" Width="80" Foreground="White"
                            TextAlignment="Center"/>
-                <ComboBox Name="cb_action" Width="500"/>
+                <ComboBox ItemsSource="{Binding cb_action}" SelectedItem="{Binding cb_actionSelectedItem}" 
+                          SelectedIndex="{Binding cb_actionSelectedIndex}" Width="500"/>
             </StackPanel>
 
             <StackPanel Margin="0 5 0 0" Orientation="Horizontal">
                 <TextBlock Text="Argument" Width="80" Foreground="White"
                            TextAlignment="Center"/>
-                <TextBox Name="tbox_arg" Width="500" />
+                <TextBox Text="{Binding tbox_arg}" Width="500" />
             </StackPanel>
 
-            <Button Content="Done" Name="bt_done"
+            <Button Content="Done" Command="{Binding DoneClick}" CommandParameter="{Binding ElementName=newLineWin}"
                     Width="100" HorizontalAlignment="Left"
-                    Margin="10 10 0 0" Click="bt_done_Click"/>
+                    Margin="10 10 0 0"/>
         </StackPanel>
     </Grid>
 </Window>

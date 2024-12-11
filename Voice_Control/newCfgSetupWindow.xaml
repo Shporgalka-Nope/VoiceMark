@@ -1,4 +1,6 @@
-﻿<Window x:Class="Voice_Control.newCfgSetupWindow"
+﻿<Window 
+        Name="newCfgCreationWindow"
+        x:Class="Voice_Control.newCfgSetupWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -30,17 +32,17 @@
             <StackPanel Margin="0 15 0 0" Orientation="Horizontal" HorizontalAlignment="Center">
                 <TextBlock Text="New cfg name" FontSize="15" 
                            Foreground="White" Margin="0 0 5 0"/>
-                <TextBox Name="tbox_cfgName" Height="20" Width="100" TextChanged="tbox_cfgName_TextChanged"/>
+                <TextBox Text="{Binding tbox_cfgName}" Height="20" Width="100"/>
             </StackPanel>
             
             <StackPanel Margin="0 5 0 0" Orientation="Horizontal" HorizontalAlignment="Center">
                 <TextBlock Text="Cfg culture" FontSize="15" 
                            Foreground="White" Margin="23 0 5 0"/>
-                <ComboBox Name="cb_cultures" Width="100"/>
+                <ComboBox SelectedItem="{Binding cb_culturesSelectedItem}" Width="100"/>
             </StackPanel>
 
-            <Button Name="bt_finish" Content="Create"
-                    Width="100" Margin="0 20 0 0" Click="bt_finish_Click"/>
+            <Button Command="{Binding FinishClick}" CommandParameter="{Binding ElementName=newCfgCreationWindow}" Content="Create"
+                    Width="100" Margin="0 20 0 0"/>
         </StackPanel>
     </Grid>
 </Window>
