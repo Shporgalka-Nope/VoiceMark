@@ -15,7 +15,7 @@ namespace Voice_Control.VM
     {
         public string pathToCfg;
 
-        public ItemCollection cb_cultures;
+        public List<CultureInfo> cb_cultures = new List<CultureInfo>();
         public int cb_culturesSelectedIndex;
         public object cb_culturesSelectedItem;
         public bool bt_finishIsEnabled;

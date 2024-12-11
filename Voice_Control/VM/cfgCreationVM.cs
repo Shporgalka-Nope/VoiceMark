@@ -32,6 +32,7 @@ namespace Voice_Control.VM
         public cfgCreationVM(CultureInfo[] cultures)
         {
             _cultures = cultures;
+
         }
 
         private RelayCommand newClick;
