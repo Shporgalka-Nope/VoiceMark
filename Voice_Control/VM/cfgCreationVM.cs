@@ -1,9 +1,12 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Speech.Synthesis;
 using System.Text;
 using System.Text.Json;
@@ -14,20 +17,92 @@ using System.Windows.Media;
 
 namespace Voice_Control.VM
 {
-    internal class cfgCreationVM
+    internal class cfgCreationVM : INotifyPropertyChanged
     {
-        private CultureInfo[] _cultures; //Needed for new cfg creation (not used here)
-        private CommandList currentList; //Stores all CAction after JSON load
-        private string selectedCfgPath = null;
+        private CultureInfo[] _cultures { get; set; } //Needed for new cfg creation (not used here)
+        private CommandList currentList { get; set; } //Stores all CAction after JSON load
+        private string selectedCfgPath { get; set; } = null;
 
-        public string tb_cfgName { get; set; }
-        public string tb_cfgCulture { get; set; }
-        public bool bt_saveIsEnabled { get; set; }
-        public bool bt_delIsEnabled { get; set; }
-        public bool bt_delLineIsEnabled { get; set; }
-        public bool bt_addNewLineIsEnabled { get; set; }
-        public bool tbox_lineNumIsEnabled { get; set; }
-        public UIElementCollection sp_allCommands { get; set; }
+        private string _tb_cfgName;
+        public string tb_cfgName 
+        { 
+            get { return _tb_cfgName; } 
+            set 
+            {  
+                _tb_cfgName = value;
+                OnPropertyChanged("tb_cfgName");
+            } 
+        }
+        private string _tb_cfgCulture;
+        public string tb_cfgCulture 
+        { 
+            get { return _tb_cfgCulture; } 
+            set
+            {
+                _tb_cfgCulture = value;
+                OnPropertyChanged("tb_cfgCulture");
+            }
+        }
+        private bool _bt_saveIsEnabled;
+        public bool bt_saveIsEnabled 
+        { 
+            get { return _bt_saveIsEnabled; } 
+            set
+            {
+                _bt_saveIsEnabled = value;
+                OnPropertyChanged("bt_saveIsEnabled");
+            } 
+        }
+        private bool _bt_delIsEnabled;
+        public bool bt_delIsEnabled 
+        { 
+            get { return _bt_delIsEnabled; } 
+            set
+            {
+                _bt_delIsEnabled = value;
+                OnPropertyChanged("bt_delIsEnabled ");
+            } 
+        }
+        private bool _bt_delLineIsEnabled;
+        public bool bt_delLineIsEnabled 
+        { 
+            get { return _bt_delLineIsEnabled; } 
+            set
+            {
+                _bt_delLineIsEnabled = value;
+                OnPropertyChanged("bt_delLineIsEnabled");
+            } 
+        }
+        private bool _bt_addNewLineIsEnabled;
+        public bool bt_addNewLineIsEnabled 
+        { 
+            get { return _bt_addNewLineIsEnabled; } 
+            set
+            {
+                _bt_addNewLineIsEnabled = value;
+                OnPropertyChanged("bt_addNewLineIsEnabled");
+            } 
+        }
+        private bool _tbox_lineNumIsEnabled;
+        public bool tbox_lineNumIsEnabled 
+        { 
+            get { return _tbox_lineNumIsEnabled; } 
+            set
+            {
+                _tbox_lineNumIsEnabled = value;
+                OnPropertyChanged("tbox_lineNumIsEnabled");
+            } 
+        }
+        private UIElementCollection _sp_allCommands;
+        public UIElementCollection sp_allCommands 
+        { 
+            get { return _sp_allCommands; } 
+            set
+            {
+                _sp_allCommands = value;
+                OnPropertyChanged("sp_allCommands");
+            } 
+        }
 
         public cfgCreationVM(CultureInfo[] cultures)
         {
@@ -206,10 +281,12 @@ namespace Voice_Control.VM
                 bt_addNewLineIsEnabled = false;
                 bt_delLineIsEnabled = false;
                 tbox_lineNumIsEnabled = false;
-                return;
             }
             int lineNum = 0;
-            foreach (Command act in currentList.Commands)
+            
+            if (currentList.Commands != null)
+            {
+                foreach (Command act in currentList.Commands)
             {
                 Border border = new Border();
                 StackPanel newPanel = new StackPanel();
@@ -242,11 +319,19 @@ namespace Voice_Control.VM
                 newPanel.Children.Add(argument);
                 sp_allCommands.Add(border);
             }
+            }
             bt_saveIsEnabled = true;
             bt_addNewLineIsEnabled = true;
             bt_delLineIsEnabled = true;
             tbox_lineNumIsEnabled = true;
             lineNum++;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged([CallerMemberName] string prop = "")
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
     }
 }
