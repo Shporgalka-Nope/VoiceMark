@@ -40,7 +40,7 @@
             <Border BorderBrush="Black" BorderThickness="2" 
                     HorizontalAlignment="Center">
                 <TextBlock Text="{Binding tb_configName}" FontSize="14" 
-                           Width="100" Height="20"
+                           Width="100" Height="20" TextAlignment="Center"
                            Foreground="{Binding tb_configNameForeGr}" Background="White"
                            HorizontalAlignment="Center"/>
             </Border>
@@ -54,7 +54,7 @@
 
                 <TextBlock Text="{Binding tb_configLang}" FontSize="14" Width="100" Height="20"
                            Foreground="{Binding tb_configLangForeGr}" Background="White"
-                           HorizontalAlignment="Center"/>
+                           HorizontalAlignment="Center" TextAlignment="Center"/>
             </Border>
             
             <Button Command="{Binding FinishClick}" CommandParameter="{Binding ElementName=setUpWin}" 

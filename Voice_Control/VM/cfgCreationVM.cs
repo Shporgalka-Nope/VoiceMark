@@ -102,15 +102,15 @@ namespace Voice_Control.VM
                 OnPropertyChanged("tbox_lineNumIsEnabled");
             } 
         }
-        private UIElementCollection _sp_allCommands;
-        public UIElementCollection sp_allCommands 
-        { 
-            get { return _sp_allCommands; } 
+        private List<string> _sp_allCommands = new List<string>();
+        public List<string> sp_allCommands
+        {
+            get { return _sp_allCommands; }
             set
             {
                 _sp_allCommands = value;
                 OnPropertyChanged("sp_allCommands");
-            } 
+            }
         }
 
         public cfgCreationVM(CultureInfo[] cultures)
@@ -282,8 +282,7 @@ namespace Voice_Control.VM
         }
         private void UpdateScroll()
         {
-            StackPanel empty = new StackPanel();
-            sp_allCommands = empty.Children;
+            sp_allCommands.Clear();
             if (currentList.Commands == null)
             {
                 bt_saveIsEnabled = false;
@@ -295,39 +294,21 @@ namespace Voice_Control.VM
             
             if (currentList.Commands != null)
             {
+                List<string> coms = new List<string>();
                 foreach (Command act in currentList.Commands)
                 {
-                Border border = new Border();
-                StackPanel newPanel = new StackPanel();
-                newPanel.Orientation = Orientation.Horizontal;
-                border.Child = newPanel;
-                border.BorderThickness = new Thickness(2);
+                    string commandData = "";
+                    commandData += $"[{lineNum + 1}] " + act.Phrase + " | ";
 
-                TextBlock phrase = new TextBlock();
-                phrase.Text = $"{lineNum + 1} Phrase: {act.Phrase}; ";
-                phrase.FontSize = 14;
-                phrase.Foreground = Brushes.White;
+                    int i = 0;
+                    while (act.Action != CActions.ActionList[i].ActionNum) { i++; }
 
-                TextBlock action = new TextBlock();
-                int i = 0;
-                while (act.Action != CActions.ActionList[i].ActionNum)
-                {
-                    i++;
+                    commandData += CActions.ActionList[i].Discription + " | ";
+
+                    commandData += act.Argument;
+                    coms.Add(commandData);
                 }
-                action.Text = $"Action: {CActions.ActionList[i].Discription}; ";
-                action.FontSize = 14;
-                action.Foreground = Brushes.White;
-
-                TextBlock argument = new TextBlock();
-                argument.Text = $"Argument: {act.Argument}; ";
-                argument.FontSize = 14;
-                argument.Foreground = Brushes.White;
-
-                newPanel.Children.Add(phrase);
-                newPanel.Children.Add(action);
-                newPanel.Children.Add(argument);
-                sp_allCommands.Add(border);
-                }
+                sp_allCommands = coms;
             }
             bt_saveIsEnabled = true;
             bt_addNewLineIsEnabled = true;

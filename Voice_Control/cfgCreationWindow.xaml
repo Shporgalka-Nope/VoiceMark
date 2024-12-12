@@ -19,7 +19,7 @@
             <StackPanel DockPanel.Dock="Bottom" Background="White"
                         Orientation="Horizontal" Height="30">
                 <Button 
-                    Width="100"
+                    Width="100" Content="Save and exit"
                     Command="{Binding SaveClick}" 
                     CommandParameter="{Binding ElementName=cfgCreationWin}"
                     IsEnabled="{Binding bt_saveIsEnabled}" />
@@ -55,7 +55,7 @@
             </StackPanel>
 
             <ScrollViewer>
-                <ItemsControl DataContext="{Binding sp_allCommands}" Margin="5 5 5 0"/>
+                <ListBox ItemsSource="{Binding sp_allCommands}" Margin="5 5 5 0"/>
 
             </ScrollViewer>
         </DockPanel>

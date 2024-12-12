@@ -1,25 +1,59 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Speech.Recognition;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Xps.Serialization;
 
 namespace Voice_Control.VM
 {
-    internal class VoiceEngineVM
+    internal class VoiceEngineVM : INotifyPropertyChanged
     {
         private SpeechRecognitionEngine engine;
         private CommandList commandList;
         private List<string> commands;
+        private bool isAllowedToListen = true;
 
-        public string tb_CheechToText { get; set; }
-        public string tb_cultureName { get; set; }
-        public string tb_configName { get; set; }
+        private string _tb_CheechToText;
+        public string tb_CheechToText 
+        { 
+            get { return _tb_CheechToText; } 
+            set
+            {
+                _tb_CheechToText = value;
+                OnPropertyChanged("tb_CheechToText");
+            }
+        }
+
+        private string _tb_cultureName;
+        public string tb_cultureName 
+        { 
+            get { return _tb_cultureName; } 
+            set
+            {
+                _tb_cultureName = value;
+                OnPropertyChanged("tb_cultureName");
+            }
+        }
+
+        private string _tb_configName;
+        public string tb_configName 
+        { 
+            get { return _tb_configName; } 
+            set
+            {
+                _tb_configName = value;
+                OnPropertyChanged("tb_configName");
+            } 
+        }
+
         public VoiceEngineVM(MainWindow mainWin)
         {
             engine = new SpeechRecognitionEngine();
@@ -52,14 +86,19 @@ namespace Voice_Control.VM
             //INFORMATION setup
             tb_cultureName = "Culture: " + commandList.Culture;
             tb_configName = "Name: " + commandList.Name;
+            tb_CheechToText = "[Ready]";
         }
 
-        private void Engine_SpeechDetected(object? sender, SpeechDetectedEventArgs e)
+        private async void Engine_SpeechDetected(object? sender, SpeechDetectedEventArgs e)
         {
+            if (!isAllowedToListen) { return; }
             tb_CheechToText = "Result: [Listening...]";
+            await Task.Delay(1000);
+            tb_CheechToText = "[Ready]";
         }
         private void Engine_SpeechRecognized(object? sender, SpeechRecognizedEventArgs e)
         {
+            if (!isAllowedToListen) { return; }
             tb_CheechToText = "Result: " + e.Result.Text;
             int act = -1;
             string arg = null;
@@ -75,7 +114,7 @@ namespace Voice_Control.VM
             DoTheAct(act, arg);
         }
 
-        private void DoTheAct(int actType, string actArg)
+        private async void DoTheAct(int actType, string actArg)
         {
             switch (actType)
             {
@@ -102,6 +141,8 @@ namespace Voice_Control.VM
                     }
                     break;
             }
+            await Task.Delay(1000);
+            tb_CheechToText = "[Ready]";
         }
 
         private RelayCommand settingsClick;
@@ -111,11 +152,19 @@ namespace Voice_Control.VM
             {
                 return settingsClick ?? (settingsClick = new RelayCommand(obj =>
                 {
+                    isAllowedToListen = false;
+                    (obj as MainWindow).Hide();
                     MainWindow mainWin = new MainWindow();
-                    mainWin.ShowDialog();
-                    (obj as MainWindow).Close();
+                    mainWin.Show();
                 }));
             }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged([CallerMemberName] string prop = "")
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
     }
 }

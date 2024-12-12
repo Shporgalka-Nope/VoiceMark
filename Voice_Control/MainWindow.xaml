@@ -43,7 +43,7 @@
                     <Button Content="Settings" FontSize="18" Width="100" 
                             FontWeight="SemiBold" Name="bt_settings" 
                             Command="{Binding SettingsClick}" 
-                            CommandParameter="{Binding Win_Main}"/>
+                            CommandParameter="{Binding ElementName=Win_Main}"/>
                 </StackPanel>
             </Grid>
             

@@ -1,9 +1,11 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Speech.Recognition;
 using System.Speech.Synthesis;
 using System.Text;
@@ -14,7 +16,7 @@ using System.Windows.Media;
 
 namespace Voice_Control.VM
 {
-    internal class SetUpVM
+    internal class SetUpVM : INotifyPropertyChanged
     {
         private IReadOnlyCollection<RecognizerInfo> availableLangs;
         public CommandList selectedConfig
@@ -28,11 +30,59 @@ namespace Voice_Control.VM
             set { SetUpCookies.selectedCulture = value; }
         }
 
-        public string tb_configName { get; set; }
-        public Brush tb_configNameForeGr { get; set; }
-        public string tb_configLang { get; set; }
-        public Brush tb_configLangForeGr { get; set; }
-        public bool bt_finishIsEnabled { get; set; }
+        private string _tb_configName;
+        public string tb_configName 
+        { 
+            get { return  _tb_configName; } 
+            set 
+            {  
+                _tb_configName = value;
+                OnPropertyChanged("tb_configName");
+            } 
+        }
+        
+        private Brush _tb_configNameForeGr;
+        public Brush tb_configNameForeGr 
+        { 
+            get { return _tb_configNameForeGr; } 
+            set
+            {
+                _tb_configNameForeGr = value;
+                OnPropertyChanged("tb_configNameForeGr");
+            } 
+        }
+        
+        private string _tb_configLang;
+        public string tb_configLang 
+        { 
+            get { return _tb_configLang; } 
+            set
+            {
+                _tb_configLang = value;
+                OnPropertyChanged("tb_configLang");
+            }
+        }
+        private Brush _tb_configLangForeGr;
+        public Brush tb_configLangForeGr 
+        { 
+            get { return _tb_configLangForeGr; } 
+            set
+            {
+                _tb_configLangForeGr = value;
+                OnPropertyChanged("tb_configLangForeGr");
+            } 
+        }
+
+        private bool _bt_finishIsEnabled;
+        public bool bt_finishIsEnabled 
+        { 
+            get { return _bt_finishIsEnabled; } 
+            set
+            {
+                _bt_finishIsEnabled = value;
+                OnPropertyChanged("bt_finishIsEnabled");
+            } 
+        }
 
         public SetUpVM(SpeechRecognitionEngine engine)
         {
@@ -118,7 +168,7 @@ namespace Voice_Control.VM
                     foreach (var lang in availableLangs) { cultures.Add(lang.Culture); }
                     cfgCreationWindow cfgWin = new cfgCreationWindow(cultures.ToArray());
                     cfgWin.ShowDialog();
-                    if (cfgWin.DialogResult == true) { UpdateAll(); }
+                    //if (cfgWin.DialogResult == true) { UpdateAll(); }
                 }));
             }
         }
@@ -157,6 +207,13 @@ namespace Voice_Control.VM
                     UpdateAll();
                 }));
             }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged([CallerMemberName] string prop = "")
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
     }
 }
