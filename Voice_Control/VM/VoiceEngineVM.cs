@@ -19,7 +19,24 @@ namespace Voice_Control.VM
         private SpeechRecognitionEngine engine;
         private CommandList commandList;
         private List<string> commands;
-        private bool isAllowedToListen = true;
+        private bool _isAllowedToListen = true;
+        private bool isAllowedToListen
+        {
+            get { return _isAllowedToListen; }
+            set
+            {
+                _isAllowedToListen = value;
+                switch (_isAllowedToListen)
+                {
+                    case true:
+                        tb_CheechToText = "[Ready]";
+                        break;
+                    case false:
+                        tb_CheechToText = "[Disabled]";
+                        break;
+                }
+            }
+        }
 
         private string _tb_CheechToText;
         public string tb_CheechToText 
@@ -156,6 +173,18 @@ namespace Voice_Control.VM
                     (obj as MainWindow).Hide();
                     MainWindow mainWin = new MainWindow();
                     mainWin.Show();
+                }));
+            }
+        }
+
+        private RelayCommand muteClick;
+        public RelayCommand MuteClick
+        {
+            get
+            {
+                return muteClick ?? (muteClick = new RelayCommand(obj =>
+                {
+                    isAllowedToListen = !isAllowedToListen;
                 }));
             }
         }
